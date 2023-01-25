@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Quadrado que se move</title>
+    <div id="square" style="width: 50px; height: 50px; background-color: red; position: absolute; left: 0%; top: 0%; margin-top:0; margin-left:0;">
+    </div>
+    <div id="ball" style="width: 50px; position: relative; height: 50px; background-color: blue; border-radius: 25px;"></div>
+    <script>
+        var ball = document.getElementById("ball");
+        var square = document.getElementById("square");
+        var lastClicked = "none"; // variable to keep track of the last clicked side
+      
+        document.addEventListener("keydown", function(event) {
+          switch (event.keyCode) {
+            case 87: // W key
+              square.style.marginTop = parseInt(square.style.marginTop) - 10 + "px";
+              lastClicked = "up";
+              break;
+            case 83: // S key
+              square.style.marginTop = parseInt(square.style.marginTop) + 10 + "px";
+              lastClicked = "down";
+              break;
+            case 68: // D key
+              square.style.marginLeft = parseInt(square.style.marginLeft) + 10 + "px";
+              lastClicked = "right";
+              break;
+            case 65: // A key
+              square.style.marginLeft = parseInt(square.style.marginLeft) - 10 + "px";
+              lastClicked = "left";
+              break;
+          }
+        });
+      
+        function collisionDetection() {
+          // getting the bounding client rect of the square and the ball
+          var squareRect = square.getBoundingClientRect();
+          var ballRect = ball.getBoundingClientRect();
+      
+          // checking if the square and the ball are colliding
+          if (squareRect.x < ballRect.x + ballRect.width &&
+              squareRect.x + squareRect.width > ballRect.x &&
+              squareRect.y < ballRect.y + ballRect.height &&
+              squareRect.height + squareRect.y > ballRect.y) {
+            //if they collide, move the ball to a random position
+            ball.style.left = Math.floor(Math.random() * window.innerWidth) + "px";
+            ball.style.top = Math.floor(Math.random() * window.innerHeight) + "px";
+          }
+      
+          // check the value of lastClicked and update the square's position accordingly
+          switch (lastClicked) {
+            case "up":
+              square.style.marginTop = parseInt(square.style.marginTop) - 10 + "px";
+              break;
+            case "down":
+              square.style.marginTop = parseInt(square.style.marginTop) + 10 + "px";
+              break;
+            case "right":
+              square.style.marginLeft = parseInt(square.style.marginLeft) + 10 + "px";
+              break;
+            case "left":
+              square.style.marginLeft = parseInt(square.style.marginLeft) - 10 + "px";
+              break;
+          }
+        }
+      
+        setInterval(collisionDetection, 50);
+      </script>
+      
+</head>
+</html>
